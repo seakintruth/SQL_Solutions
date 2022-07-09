@@ -18,10 +18,11 @@ Public Domain in the United States of America,
 */
 
 -- This SQL generates results for all dates for 
--- the past 50 years, and 20 year into the future takes roughly 3 seconds
--- reducing to a 14 year range resolves in .7 seconds.
--- the past 300 years, and 100 year into the future takes roughly 18 seconds
--- find replace all of 365.2524*10 and 365.2524*4 with previous and future days to generate 
+-- the past 50 years, and 20 year into the future takes roughly 2 seconds
+-- reducing to a 14 year range resolves in .5 seconds.
+-- and a 8 year range in .3 seconds
+-- the past 300 years, and 100 year into the future takes roughly 11 seconds
+-- find replace all of 365.2524*6 and 365.2524*2 with previous and future days to generate 
 -- it also identifies workdays, holidays and holiday leave days based on the FEDERAL_HOLIDAY CTE immediatly following
 -- see notes section of https://www.law.cornell.edu/uscode/text/5/6103
 with
@@ -35,88 +36,28 @@ with
               , 1                                       as HOLIDAY_MONTH
               , To_date('06-28-1870', 'mm-dd-yyyy')     as DATE_JOINED
               , 'New Years Day'                         as OFFICIAL_NAME
-         from Dual
-         union
-         select 2                                         as HOLIDAY_SA_ID
-              , 15                                        as START_DAY
-              , 2                                         as DAY_OF_WEEK
-              , 1                                         as HOLIDAY_MONTH
-              , To_date('11-02-1983', 'mm-dd-yyyy')       as DATE_JOINED
-              , 'Birthday of Martin Luther King, Jr.'     as OFFICIAL_NAME
-         from Dual
-         union
-         select 3                                       as HOLIDAY_SA_ID
-              , 15                                      as START_DAY
-              , 2                                       as DAY_OF_WEEK
-              , 2                                       as HOLIDAY_MONTH
-              , To_date('01-01-1879', 'mm-dd-yyyy')     as DATE_JOINED
-              , 'Washingtons Birthday'                  as OFFICIAL_NAME
-         from Dual
-         union
-         select 4                                       as HOLIDAY_SA_ID
-              , 25                                      as START_DAY
-              , 2                                       as DAY_OF_WEEK
-              , 5                                       as HOLIDAY_MONTH
-              , To_date('01-01-1971', 'mm-dd-yyyy')     as DATE_JOINED
-              , 'Memorial Day'                          as OFFICIAL_NAME
-         from Dual
-         union
-         select 5                                          as HOLIDAY_SA_ID
-              , 19                                         as START_DAY
-              , 0                                          as DAY_OF_WEEK
-              , 6                                          as HOLIDAY_MONTH
-              , To_date('06-14-2021', 'mm-dd-yyyy')        as DATE_JOINED
-              , 'Juneteenth National Independence Day'     as OFFICIAL_NAME
-         from Dual
-         union
-         select 6                                       as HOLIDAY_SA_ID
-              , 4                                       as START_DAY
-              , 0                                       as DAY_OF_WEEK
-              , 7                                       as HOLIDAY_MONTH
-              , To_date('06-28-1870', 'mm-dd-yyyy')     as DATE_JOINED
-              , 'Independence Day'                      as OFFICIAL_NAME
-         from Dual
-         union
-         select 7                                       as HOLIDAY_SA_ID
-              , 1                                       as START_DAY
-              , 2                                       as DAY_OF_WEEK
-              , 9                                       as HOLIDAY_MONTH
-              , To_date('06-28-1894', 'mm-dd-yyyy')     as DATE_JOINED
-              , 'Labor Day'                             as OFFICIAL_NAME
-         from Dual
-         union
-         select 8                                       as HOLIDAY_SA_ID
-              , 8                                       as START_DAY
-              , 2                                       as DAY_OF_WEEK
-              , 10                                      as HOLIDAY_MONTH
-              , To_date('06-28-1937', 'mm-dd-yyyy')     as DATE_JOINED
-              , 'Columbus Day'                          as OFFICIAL_NAME
-         from Dual
-         union
-         select 9                                       as HOLIDAY_SA_ID
-              , 11                                      as START_DAY
-              , 0                                       as DAY_OF_WEEK
-              , 11                                      as HOLIDAY_MONTH
-              , To_date('06-28-1938', 'mm-dd-yyyy')     as DATE_JOINED
-              , 'Veterans Day'                          as OFFICIAL_NAME
-         from Dual
-         union
-         select 10                                      as HOLIDAY_SA_ID
-              , 22                                      as START_DAY
-              , 5                                       as DAY_OF_WEEK
-              , 11                                      as HOLIDAY_MONTH
-              , To_date('06-28-1941', 'mm-dd-yyyy')     as DATE_JOINED
-              , 'Thanksgiving Day'                      as OFFICIAL_NAME
-         from Dual
-         union
-         select 11                                      as HOLIDAY_SA_ID
-              , 25                                      as START_DAY
-              , 0                                       as DAY_OF_WEEK
-              , 12                                      as HOLIDAY_MONTH
-              , To_date('06-28-1870', 'mm-dd-yyyy')     as DATE_JOINED
-              , 'Christmas Day'                         as OFFICIAL_NAME
+         from Dual union
+         select 2, 15, 2, 1, To_date('11-02-1983', 'mm-dd-yyyy'), 'Birthday of Martin Luther King, Jr.'  
+         from Dual union
+         select 3, 15, 2, 2, To_date('01-01-1879', 'mm-dd-yyyy'), 'Washingtons Birthday'                  
+         from Dual union
+         select 4, 25, 2, 5, To_date('01-01-1971', 'mm-dd-yyyy'), 'Memorial Day'                         
+         from Dual union
+         select 5, 19, 0, 6, To_date('06-14-2021', 'mm-dd-yyyy'), 'Juneteenth National Independence Day'   
+         from Dual union
+         select 6, 4, 0, 7, To_date('06-28-1870', 'mm-dd-yyyy'), 'Independence Day'
+         from Dual union
+         select 7, 1, 2, 9, To_date('06-28-1894', 'mm-dd-yyyy'), 'Labor Day'
+         from Dual union
+         select 8, 8, 2, 10, To_date('06-28-1937', 'mm-dd-yyyy'), 'Columbus Day'
+         from Dual union
+         select 9, 11, 0, 11, To_date('06-28-1938', 'mm-dd-yyyy'), 'Veterans Day'
+         from Dual union
+         select 10, 22, 5, 11, To_date('06-28-1941', 'mm-dd-yyyy'), 'Thanksgiving Day'
+         from Dual union
+         select 11, 25, 0, 12, To_date('06-28-1870', 'mm-dd-yyyy'), 'Christmas Day'
          from Dual                                                                    --
-                  ),
+    ),
     GENERATED_DATE
     as
         ( /*
@@ -124,60 +65,18 @@ with
           this is sometimes needed for counting days, or to simplify charting results, use the fields you need.
           */
          select                   -- start at 10 years in the past adjust '10' as needed
-                Trunc(Sysdate - Trunc((365.2524*10))) + (Level)                                  as A_DATE
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'DAY')                  as DAY_FULL
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'Day')                  as DAY_FULL_CAPITAL_CASE
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'day')                  as DAY_FULL_LOWER_CASE
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'DY')                   as DAY_ABBREV
+                Trunc(Sysdate - Trunc((365.2524*6))) + (Level)                                  as A_DATE
               -- one way of determining what days are weekdays
-              , case To_number(To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'D'))
+              , case To_number(To_char(Trunc(Sysdate - Trunc((365.2524*6))) + (Level), 'D'))
                     when 7 then 0
                     when 1 then 0
                     else 1
-                end                                                                   as IS_WEEKDAY
-              -- another way of determining what days are weekdays, by abbreviated days that contain a 'S' (in english) example of using REGEX
-              , case
-                    when Regexp_substr(
-                             To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'DY')
-                           , 'S'
-                           , 1
-                           , 1
-                           , 'i'
-                         ) = 'S'
-                    then
-                        0
-                    else
-                        1
-                end                                                                   as IS_WEEKDAY_BY_REGEX
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'D')                    as DAY_OF_WEEK
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'DD')                   as DAY_OF_MONTH
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'DDD')                  as DAY_OF_YEAR
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'W')                    as WEEK_OF_MONTH
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'Month')                as MONTH_FULL
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'Mon')                  as MONTH_ABBREV
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'MM')                   as MONTH_NUMBER
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'Q')                    as QUARTER
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'YY')                   as YEAR_SHORT
-              , To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'YYYY')                 as YEAR_FULL
-              -- Fiscal quarter and year of Date
-              , Mod(To_char(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 'Q') + 4, 4) + 1    as FISCAL_QUARTER
-              , To_char(Add_months(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 3), 'YY')    as FISCAL_YEAR
-              , To_char(
-                    Extract(
-                        year from Add_months(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 3)
-                    )
-                )                                                                     as FISCAL_YEAR_FULL
-              , Trunc(Sysdate - Trunc((365.2524*10))) + (Level) + 7                              as TOMORROW
-              , Trunc(Sysdate - Trunc((365.2524*10))) + (Level) + 7                              as ONE_WEEK_LATER
-              , Add_months(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 1)                   as ONE_MONTH_LATER
-              , Add_months(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 3)                   as THREE_MONTHS_LATER -- a quarter
-              , Add_months(Trunc(Sysdate - Trunc((365.2524*10))) + (Level), 12)                  as ONE_YEAR_LATER
+                end                                                                              as IS_WEEKDAY
          from Dual
-         connect by Level <= Trunc((365.2524*10)+(365.2524*4)) -- enough days for (365.2524*10) days in the past and the next (365.2524*4) days in the future
-                                       ),
-    GEN_DATES_IS_HOLIDAYS
-    as
-        (select case
+         connect by Level <= Trunc((365.2524*6)+(365.2524*2)) -- enough days for (365.2524*6) days in the past and the next (365.2524*2) days in the future
+    ),
+    GEN_DATES_IS_HOLIDAYS as (
+        select case
                     when To_number(To_char(A_DATE, 'MM')) in
                              (select HOLIDAY_MONTH from FEDERAL_HOLIDAY)
                     then
